@@ -6,7 +6,9 @@ df –h : dùng để kiểm tra dụng lượng ổ cứng
 sync; echo 3 > /proc/sys/vm/drop_caches : dùng để giải phóng caches và làm tăng bộ nhớ
 zip -r tenthumuc.zip tenthumuc :  nén thư mục 
 unzip tenthumuc.zip
-
+netstat -an |grep :80 |wc -l: xem có bao nhiêu kết nối đến cổng 80
+mkdir: tạo thư mục mới
+rm -rf tenthumuc/tenfile: xóa tệp tin
 
 Oracle
 ===========
