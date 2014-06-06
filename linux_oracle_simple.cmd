@@ -29,8 +29,15 @@ alter database datafile '/u01/oradata/qlcb/users01.dbf' autoextend on next 5m ma
 
 
 ---import & export---
+--1.Sử dụng datapumb
 expdp HSCV_BTP_FINAL/HSCV_BTP_FINAL schemas=HSCV_BTP_FINAL directory=DMPDIR dumpfile=file.dmp logfile=export.log
 impdp HSCV_NEW/HSCV_NEW  REMAP_SCHEMA=HSCV_FINAL:HSCV_NEW directory=DMPDIR dumpfile=file.dmp logfile=import.log
+
+--2.Cách thường
+imp username/password @database file=<đường dẫn\tenfile.dmp> ;
+exp username/password @database file=<đường dẫn\tenfile.dmp> ; 
+
+
 
 -- Xoa limit password, doi password dinh ky, so lan login sai
 SELECT profile FROM dba_users where username = 'QLQT';
