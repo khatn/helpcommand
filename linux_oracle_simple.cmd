@@ -19,6 +19,10 @@ SHUTDOWN IMMEDIATE
 
 create user HSCV_THA identified by HSCV_THA;
 grant dba to HSCV_THA;
+GRANT CONNECT TO VSA_VOFFICE_FULL;
+GRANT RESOURCE TO VSA_VOFFICE_FULL;
+grant create any table to VSA_VOFFICE_FULL;
+
 
 CREATE DIRECTORY DMPDIR as '/u02/dmpdir'; //create directory for importdb/exportdb
 
@@ -29,9 +33,19 @@ alter database datafile '/u01/oradata/qlcb/users01.dbf' autoextend on next 5m ma
 
 
 ---import & export---
---1.Sử dụng datapumb
+--Các bước khi exp, imp dữ liệu:
+--Bước1: Dùng tool WinSCP hoặc Secure Shell Client để kết nối đến server DB, ssh vào tài khoản root
+--Bước 2: (Sau khi đã đăng nhập vào tài khoản root rồi), gõ các lệnh
+
+su - oracle
+
+--Bước 3: Tiếp tục sử dụng các lệnh exp hoặc imp
+
+--1.Sử dụng datapumb: chú ý thư mục directory chính là directory_name trong câu lệnh select datapump
 expdp HSCV_BTP_FINAL/HSCV_BTP_FINAL schemas=HSCV_BTP_FINAL directory=DMPDIR dumpfile=file.dmp logfile=export.log
-impdp HSCV_NEW/HSCV_NEW  REMAP_SCHEMA=HSCV_FINAL:HSCV_NEW directory=DMPDIR dumpfile=file.dmp logfile=import.log
+impdp QLQT_REAL/QLQT_REAL  REMAP_SCHEMA=QLQT1:QLQT_REAL directory=DATA_PUMP_DIR dumpfile=QLQT.DMP logfile=impQLQT.log;
+--Note:     + SELECT * FROM all_directories where directory_name like 'DATA_PUMP_DIR';
+
 
 --2.Cách thường
 imp username/password @database file=<đường dẫn\tenfile.dmp> ;
