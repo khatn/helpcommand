@@ -58,3 +58,6 @@ SELECT profile FROM dba_users where username = 'QLQT';
 ALTER PROFILE DEFAULT LIMIT               //DEFAULT là tên profile cần đổi, ở đây profile mặc định của user 'QLQT' là DEFAULT
 FAILED_LOGIN_ATTEMPTS UNLIMITED
 PASSWORD_LIFE_TIME UNLIMITED;
+
+
+Tài khoản Githubs: khatn2705@gmail.com/khatn2705
