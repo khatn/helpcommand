@@ -39,7 +39,7 @@ alter database datafile '/u01/oradata/qlcb/users01.dbf' autoextend on next 5m ma
 
 su - oracle
 
---Bước 3: Tiếp tục sử dụng các lệnh exp hoặc imp
+--Bước 3: Tiếp tục sử dụng các lệnh exp hoặc imp, sử dungj ngoài sqlplus (nếu dùng sql gõ sqlplus sau khi đã su oracle)
 
 --1.Sử dụng datapumb: chú ý thư mục directory chính là directory_name trong câu lệnh select datapump
 expdp HSCV_BTP_FINAL/HSCV_BTP_FINAL schemas=HSCV_BTP_FINAL directory=DMPDIR dumpfile=file.dmp logfile=export.log
