@@ -47,6 +47,8 @@ su - oracle
 expdp HSCV_BTP_FINAL/HSCV_BTP_FINAL schemas=HSCV_BTP_FINAL directory=DMPDIR dumpfile=file.dmp logfile=export.log
 impdp QLQT_REAL/QLQT_REAL  REMAP_SCHEMA=QLQT1:QLQT_REAL directory=DATA_PUMP_DIR dumpfile=QLQT.DMP logfile=impQLQT.log;
 --Note:     + SELECT * FROM all_directories where directory_name like 'DATA_PUMP_DIR';
+            + Trong lệnh impdp, remap_schemas: QLQT1 - là user đã export db, QLQT_REAL - là user sẽ import db
+            + Đã export bằng datapump thì phải import bằng datapump
 
 
 --2.Cách thường
