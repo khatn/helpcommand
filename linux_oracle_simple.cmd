@@ -10,7 +10,7 @@ netstat -an |grep :80 |wc -l: xem có bao nhiêu kết nối đến cổng 80
 mkdir: tạo thư mục mới
 rm -rf tenthumuc/tenfile: xóa tệp tin
 chmod -R 0777 /tênthưmục : phân quyền đọc ghi file trên folder cho tất cả user
-CATALINA_OPTS="-Xmx2g -XX:PermSize=512M -XX:MaxPermSize=800m" 
+set CATALINA_OPTS=-Xmx2g -XX:PermSize=500M -XX:MaxPermSize=800m
 CATALINA_OPTS="-Xmx1g -XX:PermSize=256M -XX:MaxPermSize=500m" -- Tăng bộ nhớ Tomcat khi bị PermGem, viết trong Catalina.sh(Linux) hoặc Catalina.bat(Window)
 export JAVA_HOME="/u01/qlqt/jdk1.7.0_25" --Chỉnh java_home cho Tomcat
 
