@@ -23,6 +23,9 @@ if exist "%CATALINA_HOME%\bin\setenv.bat" call "%CATALINA_HOME%\bin\setenv.bat"
 CATALINA_OPTS="-Xmx1g -XX:PermSize=256M -XX:MaxPermSize=500m" -- Tăng bộ nhớ Tomcat khi bị PermGem, viết trong Catalina.sh(Linux) hoặc Catalina.bat(Window)
 export JAVA_HOME="/u01/qlqt/jdk1.7.0_25" --Chỉnh java_home cho Tomcat
 
+--Trong file setenv.bat--
+set JAVA_OPTS=-Dfile.encoding=UTF-8 -Xms128m -Xmx1024m -XX:PermSize=64m -XX:MaxPermSize=256m
+
 Oracle
 ===========
 su – oracle  (dùng để vào oracle)
