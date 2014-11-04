@@ -65,6 +65,7 @@ impdp QLQT_REAL/QLQT_REAL  REMAP_SCHEMA=QLQT1:QLQT_REAL directory=DATA_PUMP_DIR 
             + Trong lệnh impdp, remap_schemas: QLQT1 - là user đã export db, QLQT_REAL - là user sẽ import db
             + Đã export bằng datapump thì phải import bằng datapump
 
+Lệnh export exclude: expdp SOTUPHAP_LLTP/SOTUPHAP_LLTP schemas=SOTUPHAP_LLTP EXCLUDE=TABLE:\"LIKE \'%ACTION_LOG%\'\" directory=DATA_EXP dumpfile=QLLTP_OLD_2710.dmp logfile=QLLTP_OLD_2710.log
 
 --2.Cách thường
 imp username/password @database file=<đường dẫn\tenfile.dmp> ;
