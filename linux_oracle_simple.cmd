@@ -79,5 +79,21 @@ ALTER PROFILE DEFAULT LIMIT               //DEFAULT là tên profile cần đổ
 FAILED_LOGIN_ATTEMPTS UNLIMITED
 PASSWORD_LIFE_TIME UNLIMITED;
 
+--Import va Export khi khac version, exclude là ko exp ra bang trong lenh exclude 
+expdp SOTUPHAP_LLTP/SOTUPHAP_LLTP schemas=SOTUPHAP_LLTP EXCLUDE=TABLE:\"LIKE \'%ACTION_LOG%\'\" VERSION=10.2.0.4.0 directory=DATA_EXP dumpfile=QLLTP_OLD_2710.dmp logfile=QLLTP_OLD_2710.log
+
+--Kill session
+SELECT * FROM v$session where username =  'THA_DEMO';
+ALTER SYSTEM KILL SESSION 'SID,SERIAL#' IMMEDIATE; 
+
+-- Tao table space
+ create tablespace TASKMANAGER
+  logging
+  datafile 'TASKMANAGERAIC.dbf' 
+  size 512m -- tuy du lieu tang truong
+  autoextend on 
+  next 1024m maxsize 2048m -- tuy du lieu tang truong thuong la de 2048m
+  extent management local;
+
 
 Tài khoản Githubs: khatn2705@gmail.com/khatn2705
