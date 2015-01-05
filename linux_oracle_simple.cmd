@@ -94,6 +94,30 @@ ALTER SYSTEM KILL SESSION 'SID,SERIAL#' IMMEDIATE;
   autoextend on 
   next 1024m maxsize 2048m -- tuy du lieu tang truong thuong la de 2048m
   extent management local;
+  
+ALTER SYSTEM KILL SESSION '18,20254';
+
+
+
+ALTER TABLESPACE
+   users
+ADD DATAFILE
+   '/u01/app/oracle/oradata/gpcntt/users01_add.dbf'
+size 1024m;
+
+ALTER TABLESPACE users DROP DATAFILE '/u01/app/oracle/oradata/gpcntt/users01_add.dbf';
+
+ALTER TABLESPACE users 
+    ADD DATAFILE 'tbs_f04.dbf'
+    SIZE 100K
+    AUTOEXTEND ON
+    NEXT 10K
+    MAXSIZE 100K;
+
+SELECT * FROM V$tablespace;
+
+ALTER DATABASE DATAFILE '/u01/app/oracle/oradata/gpcntt/users01_add.dbf'
+    AUTOEXTEND ON;
 
 
 Tài khoản Githubs: khatn2705@gmail.com/khatn2705
