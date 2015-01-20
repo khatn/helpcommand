@@ -105,14 +105,14 @@ ADD DATAFILE
    '/u01/app/oracle/oradata/gpcntt/users01_add.dbf'
 size 1024m;
 
-ALTER TABLESPACE users DROP DATAFILE '/u01/app/oracle/oradata/gpcntt/users01_add.dbf';
+ALTER TABLESPACE ILEGO_DATA DROP DATAFILE 'D:\oracle\oradata\btp\ILEGO_DATA_EXTENT.dbf';
 
-ALTER TABLESPACE users 
-    ADD DATAFILE 'tbs_f04.dbf'
-    SIZE 100K
+ALTER TABLESPACE ILEGO_DATA 
+    ADD DATAFILE 'D:\oracle\oradata\btp\ILEGO_DATA_EXTENT.dbf'
+    SIZE 2048M
     AUTOEXTEND ON
-    NEXT 10K
-    MAXSIZE 100K;
+    NEXT 512M
+    MAXSIZE 30000M;
 
 SELECT * FROM V$tablespace;
 
