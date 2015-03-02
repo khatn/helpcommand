@@ -72,6 +72,12 @@ imp username/password @database file=<đường dẫn\tenfile.dmp> ;
 exp username/password @database file=<đường dẫn\tenfile.dmp> ; 
 
 
+II.KHẮC PHỤC SỰ CỐ
+1. Protocol adapter error
+- Khắc phục: Restart service, listener server DB (services.msc)
+
+
+
 
 -- Xoa limit password, doi password dinh ky, so lan login sai
 SELECT profile FROM dba_users where username = 'QLQT';
