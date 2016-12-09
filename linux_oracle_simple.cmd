@@ -9,6 +9,7 @@ unzip tenthumuc.zip
 netstat -an |grep :80 |wc -l: xem có bao nhiêu kết nối đến cổng 80
 mkdir: tạo thư mục mới
 rm -rf tenthumuc/tenfile: xóa tệp tin
+chmod +x *.sh     : phân quyền chạy các file sh
 chmod -R 0777 /tênthưmục : phân quyền đọc ghi file trên folder cho tất cả user
 set CATALINA_OPTS=-Xmx2g -XX:PermSize=500M -XX:MaxPermSize=800m
 //-- gọi đến file setenv.bat
@@ -27,12 +28,20 @@ export JAVA_HOME="/u01/qlqt/jdk1.7.0_25" --Chỉnh java_home cho Tomcat
 Window: set JAVA_OPTS=-Dfile.encoding=UTF-8 -Xms128m -Xmx1024m -XX:PermSize=64m -XX:MaxPermSize=256m
 Linux: export JAVA_OPTS="-Xms1024m -Xmx10246m -XX:NewSize=256m -XX:MaxNewSize=356m -XX:PermSize=256m -XX:MaxPermSize=356m" 
 
+--Xóa log server linux
+echo 3 > /proc/sys/vm/drop_caches
+
+--Xóa archive log server linux
+rman TARGET / NOCATALOG   
+delete archivelog from time 'SYSDATE-100' until time 'SYSDATE-10';
+
+
 Oracle
 ===========
-su – oracle  (dùng để vào oracle)
-sqlplus / as sysdba
-startup
-SHUTDOWN IMMEDIATE
+su - oracle  (dùng để vào oracle)
+sqlplus / "as sysdba"               -- Login khong can user, su dung quyen DBA
+startup                             -- Bat service
+SHUTDOWN IMMEDIATE                  -- Tat service
 
 create user HSCV_THA identified by HSCV_THA;
 grant dba to HSCV_THA;
