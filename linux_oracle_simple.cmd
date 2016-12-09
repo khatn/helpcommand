@@ -41,7 +41,8 @@ Oracle
 su - oracle  (dùng để vào oracle)
 sqlplus / "as sysdba"               -- Login khong can user, su dung quyen DBA
 startup                             -- Bat service
-SHUTDOWN IMMEDIATE                  -- Tat service
+shutdown immediate                  -- Tat service
+
 
 create user HSCV_THA identified by HSCV_THA;
 grant dba to HSCV_THA;
