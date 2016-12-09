@@ -1,8 +1,8 @@
 Linux
 ===========
-top –c : dùng để xem thông tin hoạt động của server
-free –m : dùng để kiểm tra thông tin bộ nhớ
-df –h : dùng để kiểm tra dụng lượng ổ cứng
+top -c : dùng để xem thông tin hoạt động của server
+free -m : dùng để kiểm tra thông tin bộ nhớ
+df -h : dùng để kiểm tra dụng lượng ổ cứng
 sync; echo 3 > /proc/sys/vm/drop_caches : dùng để giải phóng caches và làm tăng bộ nhớ
 zip -r tenthumuc.zip tenthumuc :  nén thư mục 
 unzip tenthumuc.zip
