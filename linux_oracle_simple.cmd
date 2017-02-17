@@ -35,9 +35,30 @@ echo 3 > /proc/sys/vm/drop_caches
 rman TARGET / NOCATALOG   
 delete archivelog from time 'SYSDATE-100' until time 'SYSDATE-10';
 
+--SSH
+SSH: ssh -p 2025 [root]@[220.231.118.136]
+Password: [cntt@btp#HCM]
+SSH: ssh [10.28.30.42]
+Password: [tha.qlcv@web42] 
+
+--Transfer File:
+SFTP: sftp [210.231.118.136]
+Password: [cntt@btp#HCM]
+Put: put [name file]  [context path] 
+put cas_en_US.properties  home/qlqt/tomcat/tomcat-demo-61-8088-QLQTvBTP2015-Test 
+
+put QLCB.war1  /home/qlcb/tomcat1101-7.0.61_qlcb/webapps 
+
+--Transfer File Port:
+SFTP: scp -P 2025 [name file] [root@10.28.30.89]:[/home]
+scp -P 2025 QLCB.zip root@10.28.30.89:/home
+
+
+scp HDSD_QLCB.rar root@10.28.30.25:/home/qlcb/tomcat1101-7.0.61_qlcb/webapps/QLCB/share/huongdan
+
 
 Oracle
-===========
+==============================================================================================
 su - oracle  (dùng để vào oracle)
 sqlplus / "as sysdba"               -- Login khong can user, su dung quyen DBA
 startup                             -- Bat service
