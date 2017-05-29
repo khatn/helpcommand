@@ -56,6 +56,49 @@ scp -P 2025 QLCB.zip root@10.28.30.89:/home
 
 scp HDSD_QLCB.rar root@10.28.30.25:/home/qlcb/tomcat1101-7.0.61_qlcb/webapps/QLCB/share/huongdan
 
+--Mot so lenh kiem tra server linux 
+1.Kiem tra nhung file thuc thi, co duoi mo rong la jsp
+grep -rl "getRuntime" ./* --include \*.jsp*
+
+2.
+  grep -rn "getRuntime" ./* --include \*.jsp*
+  grep -rn "getRuntime" ./* --include \*.jsp
+  grep -rn "getRuntime" ./* --include \*.jsp*
+  grep -r "getRuntime" ./* --include \*.jsp*
+  grep -rl "getRuntime" ./* --include \*.jsp*
+  ll ./user_upload/201748/
+  ll
+  pd
+  pwd
+  ps -ef | grep tomcat
+  cat tomcat1101-7.0.61_qlcb/logs/localhost_access_log.2016-0*|grep jspx
+  cat tomcat1101-7.0.61_qlcb/logs/localhost_access_log.2016-0*|grep jsp
+  cat tomcat1101-7.0.61_qlcb/logs/localhost_access_log.2016-0*|grep jsp|grep " 200 "
+  ll ./user_upload/201748/
+  ll ./user_upload/
+  ll ./user_upload/2017415
+  ll ./user_upload/201748/
+  ifconfig
+  pwd
+  ll ./user_upload/201748/
+  ps -ef | grep tomcat
+  cat tomcat-7.0.69-standard-1101-QLCB/logs/QLLLTP_2017-04-08.log
+  cat tomcat-7.0.69-standard-1101-QLCB/logs/QLLLTP_2017-04-08.log |grep update
+  cat tomcat-7.0.69-standard-1101-QLCB/logs/QLLLTP_2017-04-08.log |grep upload
+  cat tomcat-7.0.69-standard-1101-QLCB/logs/QLLLTP_*|grep jspx
+  cat tomcat-7.0.69-standard-1101-QLCB/logs/QLLLTP_*|grep "08/Apr/2017:01"
+  cat tomcat-7.0.69-standard-1101-QLCB/logs/QLLLTP_*|grep "08/Apr/2017:01"|grep upload
+  cat tomcat-7.0.69-standard-1101-QLCB/logs/QLLLTP_*|grep "08/Apr/2017"|grep "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36"|more
+  date
+  cat tomcat-7.0.69-standard-1101-QLCB/logs/QLLLTP_*|grep "07/Apr/2017"|grep "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36"|more
+  ll
+  history |more
+  history |grep jsp
+  cat /root/.bash_history |grep jsp
+  last
+
+
+
 
 Oracle
 ==============================================================================================
