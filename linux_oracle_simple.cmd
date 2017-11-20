@@ -198,6 +198,13 @@ SELECT * FROM V$tablespace;
 
 ALTER DATABASE DATAFILE '/u01/app/oracle/oradata/gpcntt/users01_add.dbf'
     AUTOEXTEND ON;
+    
+----------------------------------------------------------------------------------------------------------------------------------
+DB Link
+1. Tạo DB link remote giữa 2 server khác nhau. Ví dụ từ server 10.4.254.105 có user/pass là token/123456 remote sang 10.4.254.66:1521/betest
+CREATE DATABASE LINK DBLINKTEST 
+CONNECT TO token IDENTIFIED BY "123456" 
+USING '10.4.254.66:1521/betest';
 
 
 Tài khoản Githubs: khatn2705@gmail.com/khatn2705
