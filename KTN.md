@@ -1,223 +1,277 @@
-# helpcommand
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package formappdemo;
+create or replace PACKAGE BODY DEMO AS
 
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import oracle.jdbc.OracleTypes;
-import utils.ConnectionUtils;
+  PROCEDURE INSERT_BRANCH(
+        p_branchCode    NVARCHAR2,
+        p_branchName    NVARCHAR2,
+        p_parentBranch  NVARCHAR2        
+  )
+  AS
+  BEGIN
+    INSERT INTO branch (
+        id,
+        branch_code,
+        branch_name,
+        parent_branch_code
+    ) VALUES (
+        BRANCH_SEQ.NEXTVAL,
+        p_branchCode,
+        p_branchName,
+        p_parentBranch
+    );
+    
+    EXCEPTION WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT('Error');
+  END;
+  
+  PROCEDURE UPDATE_BRANCH(
+        p_id            NUMBER,
+        p_branchCode    NVARCHAR2,
+        p_branchName    NVARCHAR2,
+        p_parentBranch  NVARCHAR2    
+  )AS
+  BEGIN
+    UPDATE branch
+    SET
+        BRANCH_CODE = p_branchCode,
+        BRANCH_NAME = p_branchName,
+        PARENT_BRANCH_CODE = p_parentBranch
+    WHERE
+        id = p_id;
+        
+    EXCEPTION WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT('Error');
+  END;
+  
+  PROCEDURE DELETE_BRANCH(
+        p_id            NUMBER
+  )
+  AS
+  BEGIN
+    DELETE FROM BRANCH 
+    WHERE id = p_id;
+    
+    EXCEPTION WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT('Error');
+  END;
+  
+  PROCEDURE GET_ALL_BRANCH(
+        p_branchCode    NVARCHAR2,
+        p_branchName    NVARCHAR2,
+        p_parentBranch  NVARCHAR2,    
+        p_count         OUT NUMBER,
+        p_result        OUT SYS_REFCURSOR
+  )
+  AS
+  BEGIN 
+        SELECT COUNT(*) INTO p_count
+        FROM BRANCH a
+        WHERE p_branchCode IS NULL OR a.BRANCH_CODE = p_branchCode
+        AND (p_branchName IS NULL OR a.BRANCH_NAME = p_branchName)
+        AND (p_parentBranch IS NULL OR a.PARENT_BRANCH_CODE = p_parentBranch)
+        ;
+        
+        OPEN p_result FOR
+        SELECT rownum as STT, a.id, a.BRANCH_CODE, a.BRANCH_NAME, a.PARENT_BRANCH_CODE
+        FROM BRANCH a
+        WHERE p_branchCode IS NULL OR a.BRANCH_CODE = p_branchCode
+        AND (p_branchName IS NULL OR a.BRANCH_NAME = p_branchName)
+        AND (p_parentBranch IS NULL OR a.PARENT_BRANCH_CODE = p_parentBranch)
+        ;
+  END;   
 
-/**
- *
- * @author Lenovo
- */
-public class BranchForm extends javax.swing.JFrame {
 
-    public BranchForm() {
-        initComponents();
-        loadData(null, null, null);
-        resetData();
-    }
-                  
+---------------------------------------------------------
+  PROCEDURE INSERT_CUSTOMER(
+        p_branchCode    NVARCHAR2,
+        p_customerName  NVARCHAR2,
+        p_identifyNo    NVARCHAR2,
+        p_cifNo         NVARCHAR2
+  ) AS
+  BEGIN
+    -- TODO: Implementation required for PROCEDURE DEMO.INSERT_CUSTOMER
+    INSERT INTO CUSTOMER(
+        ID,
+        BRANCH_CODE,
+        CUSTOMER_NAME,
+        IDENTIFY_NO,
+        CIF
+    )
+    VALUES (
+        CUSTOMER_SEQ.NEXTVAL,
+        p_branchCode,
+        p_customerName,
+        p_identifyNo,
+        p_cifNo  
+    );
+    
+    COMMIT; 
+    
+    EXCEPTION WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error when insert customer');
+        ROLLBACK;
+  END INSERT_CUSTOMER;
+  
+  PROCEDURE UPDATE_CUSTOMER(
+        p_id            NUMBER,
+        p_branchCode    NVARCHAR2,
+        p_customerName  NVARCHAR2,
+        p_identifyNo    NVARCHAR2,
+        p_cifNo         NVARCHAR2
+  ) 
+  AS
+  BEGIN
+    UPDATE CUSTOMER a
+    SET branch_code = p_branchCode, 
+        CUSTOMER_NAME = p_customerName,
+        IDENTIFY_NO = p_identifyNo,
+        CIF = p_cifNo
+        WHERE a.ID = p_id;
+    COMMIT;    
+    EXCEPTION WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error when update customer');
+        ROLLBACK;
+  END UPDATE_CUSTOMER;
+  
+   PROCEDURE DELETE_CUSTOMER(
+        p_id            NUMBER,
+        p_result        OUT NVARCHAR2
+  )
+  AS
+  BEGIN
+    DELETE FROM CUSTOMER a WHERE a.ID = p_id;
+    p_result := '1';
+    COMMIT;
+    EXCEPTION WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error when delete customer');
+        p_result := '0';
+        ROLLBACK;
+  END DELETE_CUSTOMER;
+  
+  PROCEDURE GET_ALL_CUSTOMER(
+        p_branchCode    NVARCHAR2,
+        p_customerName  NVARCHAR2,
+        p_identifyNo    NVARCHAR2,
+        p_cifNo         NVARCHAR2,
+        p_count         OUT NUMBER,
+        p_result        OUT SYS_REFCURSOR
+  )
+  AS
+  BEGIN
+        SELECT COUNT(*) INTO p_count
+        FROM CUSTOMER a
+        WHERE (p_branchCode IS NULL OR branch_Code = p_branchCode)
+        AND (p_customerName IS NULL OR customer_name = p_customerName)
+        AND (p_identifyNo IS NULL OR identify_no = p_identifyNo)
+        AND (p_cifNo IS NULL OR cif = p_cifNo);
+        
+        OPEN p_result FOR
+        SELECT 
+            ROWNUM AS STT,a.*
+        FROM CUSTOMER a
+        WHERE (p_branchCode IS NULL OR branch_Code = p_branchCode)
+        AND (p_customerName IS NULL OR customer_name = p_customerName)
+        AND (p_identifyNo IS NULL OR identify_no = p_identifyNo)
+        AND (p_cifNo IS NULL OR cif = p_cifNo);
+  END GET_ALL_CUSTOMER;    
+  
+  ------------------------------------
+  
+  /* TODO enter package declarations (types, exceptions, methods etc) here */ 
+  PROCEDURE INSERT_ACCOUNT(
+        p_accountNo         NVARCHAR2,
+        p_accountType       NVARCHAR2,
+        p_originalAmout     NUMBER,
+        p_currentAmount     NUMBER,
+        p_cif               NVARCHAR2,
+        p_branchCode        NVARCHAR2,
+        p_status            NUMBER
+  )AS
+  BEGIN
+    INSERT INTO account (
+        id,
+        account_no,
+        account_type,
+        original_amount,
+        current_amount,
+        cif,
+        branch_code,
+        status
+    ) VALUES (
+        ACCOUNT_SEQ.NEXTVAL,
+        p_accountNo,
+        p_accountType,
+        p_originalAmout,
+        p_currentAmount,
+        p_cif,
+        p_branchCode,
+        p_status            
+    );
+  END;
+  
+  PROCEDURE UPDATE_ACCOUNT(
+        p_id                NUMBER,
+        p_accountNo         NVARCHAR2,
+        p_accountType       NVARCHAR2,
+        p_originalAmout     NUMBER,
+        p_currentAmount     NUMBER,
+        p_cif               NVARCHAR2,
+        p_branchCode        NVARCHAR2,
+        p_status            NUMBER
+  )AS
+  BEGIN
+    UPDATE account a
+        SET
+            a.ACCOUNT_NO = p_accountNo, 
+            a.ACCOUNT_TYPE = p_accountType, 
+            a.BRANCH_CODE = p_branchCode,
+            a.CIF =  p_cif, 
+            a.CURRENT_AMOUNT = p_currentAmount, 
+            a.ORIGINAL_AMOUNT = p_originalAmout, 
+            a.STATUS = p_status
+    WHERE
+            id = p_id
+        ;
+      
+  END;
+  
+  PROCEDURE DELETE_ACCOUNT(
+        p_id            NUMBER
+  )as
+  BEGIN 
+    DELETE FROM ACCOUNT a WHERE a.ID = p_id;
+    COMMIT;
+    EXCEPTION WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error when delete account');
+        ROLLBACK;
+  END
+  ;
+  
+  PROCEDURE GET_ALL_ACCOUNT(
+        p_accountNo         NVARCHAR2,
+        p_accountType       NVARCHAR2,
+        p_cif               NVARCHAR2,
+        p_branchCode        NVARCHAR2,
+        p_status            NUMBER,
+        p_count             OUT NUMBER,
+        p_result            OUT SYS_REFCURSOR
+  )AS
+  BEGIN
+    SELECT COUNT(*) INTO p_count
+        FROM ACCOUNT a
+        WHERE 
+        (p_accountNo IS NULL OR account_no = p_accountNo)
+        AND (p_accountType IS NULL OR account_type = p_accountType)
+        AND (p_branchCode IS NULL OR branch_code = p_branchCode)
+        AND (p_status IS NULL OR status = p_status);
+        
+        OPEN p_result FOR
+        SELECT 
+            ROWNUM AS STT,a.*
+        FROM ACCOUNT a
+        WHERE (p_accountNo IS NULL OR account_no = p_accountNo)
+        AND (p_accountType IS NULL OR account_type = p_accountType)
+        AND (p_branchCode IS NULL OR branch_code = p_branchCode)
+        AND (p_status IS NULL OR status = p_status);
+  END; 
 
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        // TODO add your handling code here:
-        CallableStatement call;
-        String sql;
-        try {
-            if (tblData.getSelectedRow() == -1) {
-                lblInfo.setText("Please choose record to edit");
-                return;
-            }
-
-            if ("".equals(txtBranchCode.getText())) {
-                lblInfo.setText("Please input branch code");
-                return;
-            }
-            if ("".equals(txtBranchName.getText())) {
-                lblInfo.setText("Please input branch code");
-                return;
-            }
-            if ("".equals(txtParentBranch.getText())) {
-                lblInfo.setText("Please input branch code");
-                return;
-            }
-
-            sql = "{ call DEMO.UPDATE_BRANCH(?,?,?,?)}";
-            call = ConnectionUtils.callStatement(sql);
-            call.setInt(1, Integer.parseInt(lblID.getText()));
-            call.setString(2, txtBranchCode.getText());
-            call.setString(3, txtBranchName.getText());
-            call.setString(4, txtParentBranch.getText());
-            call.execute();
-            loadData(null, null, null);
-            resetData();
-            lblInfo.setText("Update successfully");
-        } catch (Exception e) {
-            try {
-                lblInfo.setText("Error:" + e.getMessage());
-                ConnectionUtils.closeConnection();
-            } catch (SQLException ex) {
-                Logger.getLogger(BranchForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }                                       
-
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {                                       
-        // TODO add your handling code here:
-        CallableStatement call;
-        String sql;
-        try {
-            if ("".equals(txtBranchCode.getText())) {
-                lblInfo.setText("Please input branch code");
-                return;
-            }
-            if ("".equals(txtBranchName.getText())) {
-                lblInfo.setText("Please input branch code");
-                return;
-            }
-            if ("".equals(txtParentBranch.getText())) {
-                lblInfo.setText("Please input parent branch code");
-                return;
-            }
-
-            sql = "{ call DEMO.INSERT_BRANCH(?,?,?)}";
-            call = ConnectionUtils.callStatement(sql);
-            call.setString(1, txtBranchCode.getText());
-            call.setString(2, txtBranchName.getText());
-            call.setString(3, txtParentBranch.getText());
-            call.execute();
-            loadData(null, null, null);
-            //resetData();
-            lblInfo.setText("Insert successfully");
-
-        } catch (Exception e) {
-            try {
-                lblInfo.setText("Error:" + e.getMessage());
-                ConnectionUtils.closeConnection();
-            } catch (SQLException ex) {
-                Logger.getLogger(BranchForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }                                      
-
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        // TODO add your handling code here:
-        loadData(txtBranchCode.getText(), txtBranchName.getText(), txtParentBranch.getText());
-    }                                         
-
-    private void resetData() {
-        txtBranchCode.setText("");
-        txtBranchName.setText("");
-        txtParentBranch.setText("");
-        lblID.setText("");
-        lblInfo.setText("");
-    }
-
-    private void loadData(String branchCode, String branchName, String parentBranchCode) {
-        CallableStatement call;
-        ResultSet rs;
-        String sql;
-        try {
-            sql = "{call DEMO.GET_ALL_BRANCH(?,?,?,?,?)}";
-            call = ConnectionUtils.callStatement(sql);
-            call.setString(1, branchCode == "" ? null : branchCode);
-            call.setString(2, branchName == "" ? null : branchName);
-            call.setString(3, parentBranchCode == "" ? null : parentBranchCode);
-
-            call.registerOutParameter(4, OracleTypes.NUMBER);
-            call.registerOutParameter(5, OracleTypes.CURSOR);
-
-            call.execute();
-
-            rs = (ResultSet) call.getObject(5);
-            if (!rs.isBeforeFirst()) {
-                lblInfo.setText("No data found");
-                return;
-            }
-
-            DefaultTableModel model = (DefaultTableModel) tblData.getModel();
-            model.setRowCount(0);
-            Vector row;
-            while (rs.next()) {
-                row = new Vector();
-                //row.add(rs.getString("STT"));
-                row.add(rs.getString("ID"));
-                row.add(rs.getString("BRANCH_CODE"));
-                row.add(rs.getString("BRANCH_NAME"));
-                row.add(rs.getString("PARENT_BRANCH_CODE"));
-                model.addRow(row);
-            }
-
-        } catch (Exception e) {
-            lblInfo.setText("Error: " + e.getMessage());
-            try {
-                ConnectionUtils.closeConnection();
-            } catch (SQLException ex) {
-                Logger.getLogger(BranchForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
-    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-        resetData();
-    }                                          
-
-    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
-        this.setVisible(false);
-    }                                        
-
-    private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {                                     
-        // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) tblData.getModel();
-        lblID.setText(model.getValueAt(tblData.getSelectedRow(), 0).toString());
-        txtBranchCode.setText(model.getValueAt(tblData.getSelectedRow(), 1).toString());
-        txtBranchName.setText(model.getValueAt(tblData.getSelectedRow(), 2).toString());
-        txtParentBranch.setText(model.getValueAt(tblData.getSelectedRow(), 3).toString());
-        lblInfo.setText("");
-    }                                    
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        // TODO add your handling code here:
-        CallableStatement call;
-        String sql;
-        try {
-            if (tblData.getSelectedRow() == -1) {
-                lblInfo.setText("Please choose record to delete");
-                return;
-            }
-
-            int confirm = JOptionPane.showConfirmDialog(this, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-            if (confirm != JOptionPane.YES_OPTION) {
-                return;
-            }
-
-            sql = "{ call DEMO.DELETE_BRANCH(?)}";
-            call = ConnectionUtils.callStatement(sql);
-            call.setInt(1, Integer.parseInt(lblID.getText()));
-            call.execute();
-            loadData(null, null, null);
-            lblInfo.setText("Delete successfully");
-
-        } catch (Exception e) {
-            try {
-                lblInfo.setText("Error:" + e.getMessage());
-                ConnectionUtils.closeConnection();
-            } catch (SQLException ex) {
-                Logger.getLogger(BranchForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }                                                        
-}
+END DEMO;
